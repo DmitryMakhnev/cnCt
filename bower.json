@@ -1,0 +1,14 @@
+{
+  "name": "cnct",
+  "main": "cnct.js",
+  "version": "0.0.3",
+  "homepage": "https://github.com/DmitryMakhnev/cnCt",
+  "authors": [
+    "Dmitry Makhnev <dmitry.ivshin@gmail.com>"
+  ],
+  "description": "JavaScript client template engine",
+  "keywords": [
+    "template engine"
+  ],
+  "license": "MIT"
+}

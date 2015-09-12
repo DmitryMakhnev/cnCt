@@ -4,7 +4,7 @@
 
 ###cnCt документация
 
-На данный момент основная документация находиться в [cnCt.js](https://github.com/SoftWearFinance/cnCt/blob/master/cnCt.js)
+На данный момент основная документация находиться в [cnct.js](https://github.com/SoftWearFinance/cnCt/blob/master/cnct.js)
 
 ###cnCt JSON параметры
 

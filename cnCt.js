@@ -7,11 +7,11 @@
  * © SoftWearFinance LLC (http://softwearfinance.com/), Dmitry Makhnev (https://github.com/DmitryMakhnev)
  */
 
-(function(_window, _document){
+(function(){
     var cnCt,
         _templatesList,
         u,
-        abstractDIV = _document.createElement('div'),
+        abstractDIV = document.createElement('div'),
         isArray = Array.isArray !== u ?
             function(essenceForTest){
                 return Array.isArray(essenceForTest);
@@ -48,7 +48,7 @@
                 elementsDescriptorProcessing(elementsDescriptor[i], $parent, needNodes);
             }
         } else if (typeof elementsDescriptor === 'string'){
-            $parent.appendChild(_document.createTextNode(elementsDescriptor));
+            $parent.appendChild(document.createTextNode(elementsDescriptor));
         } else{
             $DOMNode = cnCt.createElement(elementsDescriptor, $parent);
             if ('n' in elementsDescriptor){
@@ -60,12 +60,12 @@
         }
     }
 
-    _window.cnCt = cnCt = {
+    cnCt = {
         version: '0.0.3',
         /**
          * create DOM from HTML str
          * @param {String} htmlStr
-         * @param {optional|HTMLElement} $parent DOM node for paste result HTML
+         * @param {HTMLElement} [$parent] DOM node for paste result HTML
          * @returns {HTMLElement} if ($parent) $parent
          *                        else documentFragment instance with paste result HTML
          */
@@ -74,7 +74,7 @@
                 i;
             abstractDIV.innerHTML = htmlStr;
             if ($parent === u){
-                $parent = _document.createDocumentFragment();
+                $parent = document.createDocumentFragment();
             }
             child = abstractDIV.childNodes;
             for (i = child.length; i-- ;){
@@ -97,7 +97,7 @@
         /**
          * create DOM node from cnCt DOM node descriptor
          * @param {Object} elementDescriptor cnCt DOM node descriptor
-         * @param {optional|HTMLElement} $parent DOM node for paste result
+         * @param {HTMLElement} [$parent] DOM node for paste result
          * @returns {HTMLElement} result DOM node
          */
         createElement: function(elementDescriptor, $parent){
@@ -106,18 +106,18 @@
                 objPointer;
             //        create element
             if (!('e' in elementDescriptor)){
-                $DOMNode = _document.createElement('div');
+                $DOMNode = document.createElement('div');
             } else if ('N' in elementDescriptor){
-                $DOMNode = _document.createElementNS(elementDescriptor.N, elementDescriptor.e);
+                $DOMNode = document.createElementNS(elementDescriptor.N, elementDescriptor.e);
             } else{
-                $DOMNode = _document.createElement(elementDescriptor.e);
+                $DOMNode = document.createElement(elementDescriptor.e);
             }
             //        check properties
             if ('c' in elementDescriptor){
                 $DOMNode.className = elementDescriptor.c;
             }
             if ('t' in elementDescriptor){
-                $DOMNode.appendChild(_document.createTextNode(elementDescriptor.t));
+                $DOMNode.appendChild(document.createTextNode(elementDescriptor.t));
             }
             if ('i' in elementDescriptor){
                 $DOMNode.id = elementDescriptor.i;
@@ -151,7 +151,7 @@
         /**
          * create fragment DOM tree from cnCt DOM nodes descriptor
          * @param {Object|Array} elementsDescriptor cnCt DOM nodes descriptor
-         * @param {optional|HTMLElement} $parent DOM node for paste result
+         * @param {HTMLElement} [$parent] DOM node for paste result
          * @returns {{r: *, *: []}} if (elementsDescriptor is Array) {r: documentFragment instance with generated nodes, ...[n1]: *, ...[n2]: *, }
          *                          else {r: main elementsDescriptor DOM node, ...[n1]: *, ...[n2]: *, }
          */
@@ -160,7 +160,7 @@
                 r: u
             };
             if (isArray(elementsDescriptor)){
-                needNodes.r = _document.createDocumentFragment();
+                needNodes.r = document.createDocumentFragment();
                 elementsDescriptorProcessing(elementsDescriptor, needNodes.r, needNodes);
             } else{
                 needNodes.r = cnCt.createElement(elementsDescriptor);
@@ -187,8 +187,8 @@
          * simple cnCt method
          * @param {function|string} template if (typeof template === 'string') cnCt get templatesList bind of bindTemplates method and call templatesList[template]
          *                                   else call template
-         * @param {optional|*} data data for template function, if (data is DOMNode) $parent = data
-         * @param {optional|HTMLElement} $parent DOM node for paste result
+         * @param {*} [data] data for template function, if (data is DOMNode) $parent = data
+         * @param {HTMLElement} [$parent] DOM node for paste result
          * @returns {{r: *, *: []}} if (elementsDescriptor is Array) {r: documentFragment instance with generated nodes, ...[n1]: *, ...[n2]: *, }
          *                          else {r: main elementsDescriptor DOM node, ...[n1]: *, ...[n2]: *, }
          */
@@ -204,5 +204,17 @@
             }
         }
     };
+    
+    // Expose the class either via AMD, CommonJS or the global object
+    var exports = this;
+    if (typeof define === 'function' && define.amd) {
+        define(function () {
+            return cnCt;
+        });
+    } else if (typeof module === 'object' && module.exports){
+        module.exports = cnCt;
+    } else {
+        exports.cnCt = cnCt;
+    }
 
-}(window, document));
+}.call(this));
